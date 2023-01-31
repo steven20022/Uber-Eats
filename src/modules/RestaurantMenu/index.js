@@ -25,7 +25,7 @@ const RestaurantMenu = () => {
 
     function renderNewItemButton() {
         return (
-            <Link>
+            <Link to={'create'}>
                 <Button type="primary">New Item</Button>
             </Link>
         )
