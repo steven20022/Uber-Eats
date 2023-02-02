@@ -1,5 +1,6 @@
 import { Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { Auth } from "aws-amplify";
 
 function SideMenu () {
 
@@ -17,11 +18,20 @@ function SideMenu () {
         {
             key: 'restaurant',
             label: 'Create Restaurant'
+        },
+        {
+            key: 'signout',
+            label: 'Sign Out'
         }
     ]
 
-    function onMenuItemClick (menuItem) {
-        navigate(menuItem.key)
+    async function onMenuItemClick(menuItem) {
+        if (menuItem.key === 'signout'){
+            await Auth.signOut();
+            window.location.reload();
+        }else{
+            navigate(menuItem.key);
+        }
     }
 
     return (
