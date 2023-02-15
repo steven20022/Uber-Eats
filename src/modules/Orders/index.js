@@ -1,8 +1,24 @@
 import {Card,Table,Tag} from "antd";
 import orders from '../../data/dashboard/orders.json';
 import { useNavigate } from "react-router-dom";
+import { useRestaurantContext } from "../../context/RestaurantContext";
+import { useEffect, useState } from "react";
+import { DataStore } from "aws-amplify";
+import { Order } from "../../models";
 
 const Orders = () => {
+    const [orders, setOrders] = useState([])
+    const {restaurant} = useRestaurantContext()
+
+    useEffect(() => {
+        if (!restaurant) {
+            return
+        }
+        DataStore.query(Order, (order) => 
+            order.orderRestaurauntId.eq(restaurant.id)).then(setOrders)
+    },[restaurant])
+
+
 
     const navigate = useNavigate();
 
