@@ -1,5 +1,4 @@
-import {Card,Table,Tag} from "antd";
-import orders from '../../data/dashboard/orders.json';
+import { Card, Table, Tag } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useRestaurantContext } from "../../context/RestaurantContext";
 import { useEffect, useState } from "react";
@@ -7,83 +6,72 @@ import { DataStore } from "aws-amplify";
 import { Order } from "../../models";
 
 const Orders = () => {
-    const [orders, setOrders] = useState([])
-    const {restaurant} = useRestaurantContext()
+    const [orders, setOrders] = useState([]);
+    const { restaurant } = useRestaurantContext();
 
     useEffect(() => {
         if (!restaurant) {
-            return
+        return;
         }
-        DataStore.query(Order, (order) => 
-            order.orderRestaurauntId.eq(restaurant.id)).then(setOrders)
-    },[restaurant])
-
-
+        DataStore.query(Order, (order) =>
+        order.orderRestaurauntId.eq(restaurant.id)
+        ).then(setOrders);
+    }, [restaurant]);
 
     const navigate = useNavigate();
 
-    function renderOrderStatus (orderStatus) {
-        let color = '';
-
-        switch (orderStatus) {
-            case 'Accepted':
-                color = 'green';
-                break;
-            case 'Pending':
-                color = 'orange';
-                break;
-
-            default:
-                color = 'red'
-                break;
-        }
-        return <Tag color={color}>{orderStatus}</Tag>
+    function renderOrderStatus(orderStatus) {
+        const statusToColor = {
+        PENDING: "blue",
+        COMPLETED: "green",
+        ACCEPTED: "orange",
+        DECLINED: "red",
+        };
+        return <Tag color={statusToColor[orderStatus]}>{orderStatus}</Tag>;
     }
 
     const tableColumns = [
-        {
-            title: 'Id',
-            dataIndex: 'orderID',
-            key: 'orderID'
+        { 
+            title: "Id", 
+            dataIndex: "id", 
+            key: "id" 
+        },
+        { 
+            title: "Created At", 
+            dataIndex: "createdAt", 
+            key: "createdAt" 
         },
         {
-            title: 'Delivery Address',
-            dataIndex: 'deliveryAddress',
-            key: 'deliveryAddress'
+            title: "Price",
+            dataIndex: "total",
+            key: "total",
+            render: (total) => `$${total.toFixed(2)}`,
         },
         {
-            title: 'Price',
-            dataIndex: 'price',
-            key: 'price',
-            render: (price) => `$${price}`
+            title: "Status",
+            dataIndex: "status",
+            key: "status",
+            render: renderOrderStatus,
         },
-        {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
-            render: renderOrderStatus
-        },
-    ]
+    ];
 
     const styles = {
-        page:{
-            margin: 20,
+        page: {
+        margin: 20,
         },
-    }
+    };
 
     return (
-        <Card title='Orders' style={styles.page}>
-            <Table 
+        <Card title="Orders" style={styles.page}>
+            <Table
                 dataSource={orders}
                 columns={tableColumns}
-                rowKey='orderID'
+                rowKey="id"
                 onRow={(order) => ({
-                    onClick: () => navigate(`order/${order.orderID}`)
+                    onClick: () => navigate(`order/${order.id}`),
                 })}
             />
         </Card>
-    )
-
-    
-}
-export default Orders
+    );
+};
+export default Orders;
