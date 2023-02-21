@@ -10,7 +10,7 @@ const Orders = () => {
     const { restaurant } = useRestaurantContext();
 
     useEffect(() => {
-        if (!restaurant) {
+        if (!restaurant?.id) {
         return;
         }
         DataStore.query(Order, (order) =>

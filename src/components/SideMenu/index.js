@@ -6,7 +6,7 @@ import { useRestaurantContext } from '../../context/RestaurantContext';
 function SideMenu () {
 
     const navigate = useNavigate()
-    const { restaurant } = useRestaurantContext
+    const { restaurant } = useRestaurantContext()
 
     const mainMenuItems = [
         
