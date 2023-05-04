@@ -99,9 +99,8 @@ const DetailedOrder = () => {
                         <div style={styles.dishItem}>{dishItem?.Dish?.name} x {dishItem?.quantity}</div>
                         <div>${dishItem?.Dish?.price.toFixed(2)}</div>
                     </List.Item>
-                )
-                }
-                >
+                )}
+            >
             </List>
             <Divider/>
             <div style={styles.totalContainer}>

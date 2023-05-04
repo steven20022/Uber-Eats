@@ -22,8 +22,12 @@ function SideMenu () {
     const menuItems = [
         ...(restaurant ? mainMenuItems: []),
         {
-            key: 'restaurant',
+            key: 'restaurants/create',
             label: 'Create Restaurant'
+        },
+        {
+            key: 'restaurants',
+            label: 'Other Restaurants'
         },
         {
             key: 'signout',
